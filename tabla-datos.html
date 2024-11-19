@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tabla de Clientes y Puntos</title>
+  <style>
+    /* Estilos para el body para centrar todo en la pantalla */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center; /* Asegura que el título esté centrado */
+    }
+
+    /* Título */
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+      font-size: 2rem;
+    }
+
+    /* Contenedor para la tabla */
+    .tabla-container {
+      width: 90%; /* Ajusta el ancho de la tabla */
+      max-width: 800px; /* Tamaño máximo para que no se estire demasiado */
+      background-color: white;
+      border-radius: 10px; /* Bordes redondeados */
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra suave */
+      padding: 20px;
+    }
+
+    /* Estilo de la tabla */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      font-size: 16px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #4CAF50;
+      color: white;
+      text-transform: uppercase;
+    }
+
+    tr:hover {
+      background-color: #f2f2f2;
+    }
+
+    td {
+      color: #555;
+    }
+
+    /* Asegura que la tabla no se expanda demasiado */
+    table {
+      margin-bottom: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="tabla-container">
+    <h1>Clientes y Puntos Acumulados</h1>
+    
+    <table>
+      <thead>
+        <tr>
+          <th>Número de Teléfono</th>
+          <th>Puntos Acumulados</th>
+        </tr>
+      </thead>
+      <tbody id="tabla-clientes">
+        <!-- Aquí se agregarán las filas con los datos -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    // Obtener todos los datos de localStorage y mostrarlos en la tabla
+    window.onload = function() {
+      const tabla = document.getElementById("tabla-clientes");
+
+      // Recorrer todas las claves (números de teléfono) de localStorage
+      for (let i = 0; i < localStorage.length; i++) {
+        const telefono = localStorage.key(i); // Clave = número de teléfono
+        const puntos = localStorage.getItem(telefono); // Valor = puntos
+
+        // Comprobar si la clave es un número de teléfono válido y tiene un valor numérico para puntos
+        if (/^\d+$/.test(telefono) && !isNaN(puntos)) {
+          // Crear una nueva fila en la tabla
+          const fila = document.createElement("tr");
+
+          // Crear las celdas para el número de teléfono y los puntos
+          const celdaTelefono = document.createElement("td");
+          const celdaPuntos = document.createElement("td");
+
+          celdaTelefono.textContent = telefono;
+          celdaPuntos.textContent = puntos;
+
+          // Añadir las celdas a la fila
+          fila.appendChild(celdaTelefono);
+          fila.appendChild(celdaPuntos);
+
+          // Añadir la fila a la tabla
+          tabla.appendChild(fila);
+        }
+      }
+    };
+  </script>
+
+</body>
+</html>
+
+
+
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Fidelización</title>
+    <link rel="stylesheet" href="css/styles-puntos.css">
+</head>
+
+
+<body>
+    <div id="app-container">
+        <h1>Puntos Acumulados</h1>
+        <label for="phone-check">Ingresa tu número de teléfono:</label>
+        <input type="tel" id="phone-check" pattern="[0-9]{10}" placeholder="Número de teléfono">
+        <button class="button-1" id="ver-puntos-btn">Ver Puntos</button>
+        <p id="puntos-acumulados">Tus puntos: <span id="puntos">0</span></p>
+    </div>
+
+    <div class="product-card">
+        <img src="img/pizza_margherita_(canje).png" alt="Producto" class="product-image">
+        <div class="product-info">
+            <h3 class="product-name">Pizza Margherita (canje)</h3>
+            <p class="product-description">Salsa de tomate pomodoro, queso mozzarella, albahaca, aceite de oliva.</p>
+            <div class="product-footer">
+                <span class="product-price" id="price-margherita">4 Puntos</span>
+                <div class="quantity-controls">
+                    <button type="button" id="decrease-margherita" onclick="decreaseQuantity('margherita')">-</button>
+                    <input type="text" id="quantity-margherita" class="quantity" value="0" readonly>
+                    <button type="button" id="increase-margherita" onclick="increaseQuantity('margherita')">+</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="product-card">
+        <img src="img/pizza_rúcula_y_jamon_crudo_(canje).png" alt="Producto" class="product-image">
+        <div class="product-info">
+            <h3 class="product-name">Pizza Rúcula y Jamon Crudo (canje)</h3>
+            <p class="product-description">Queso mozzarella, salsa de tomate pomodoro, parmesano, jamón crudo, rúcula.
+            </p>
+            <div class="product-footer">
+                <span class="product-price" id="price-rucula">6 Puntos</span>
+                <div class="quantity-controls">
+                    <button type="button" id="decrease-rucula" onclick="decreaseQuantity('rucula')">-</button>
+                    <input type="text" id="quantity-rucula" class="quantity" value="0" readonly>
+                    <button type="button" id="increase-rucula" onclick="increaseQuantity('rucula')">+</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="product-card">
+        <img src="img/pizza_pepperoni_(canje).png" alt="Producto" class="product-image">
+        <div class="product-info">
+            <h3 class="product-name">Pizza Pepperoni (canje)</h3>
+            <p class="product-description">Salsa de tomate pomodoro, queso mozzarella, albahaca, aceite de oliva,
+                pepperoni.</p>
+            <div class="product-footer">
+                <span class="product-price" id="price-pepperoni">6 Puntos</span>
+                <div class="quantity-controls">
+                    <button type="button" id="decrease-pepperoni" onclick="decreaseQuantity('pepperoni')">-</button>
+                    <input type="text" id="quantity-pepperoni" class="quantity" value="0" readonly>
+                    <button type="button" id="increase-pepperoni" onclick="increaseQuantity('pepperoni')">+</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-app.js";
+        import { getDatabase, ref, get, set } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCzMNKimcw1kaaJlMdTKj7RAdlsHyaImBk",
+            authDomain: "vera-pizza-app.firebaseapp.com",
+            databaseURL: "https://vera-pizza-app-default-rtdb.firebaseio.com/",
+            projectId: "vera-pizza-app",
+            storageBucket: "vera-pizza-app.appspot.com",
+            messagingSenderId: "783988757356",
+            appId: "1:783988757356:web:c66d3f2571aff0f125d949",
+            measurementId: "G-FNLSPHKXFW"
+        };
+
+        // Inicializar Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        let puntosDisponibles = 0;
+
+        // Mostrar puntos al hacer clic en "Ver Puntos"
+        document.getElementById('ver-puntos-btn').addEventListener('click', function () {
+            const telefono = document.getElementById('phone-check').value;
+
+            if (telefono) {
+                // Obtener puntos desde Firebase
+                const userRef = ref(database, 'usuarios/' + telefono);  // Usa la ruta correcta a los datos del usuario
+                get(userRef).then((snapshot) => {
+                    const puntos = snapshot.val() ? snapshot.val().puntos : 0; // Si no existe, asigna 0
+                    puntosDisponibles = puntos; // Guardamos los puntos disponibles
+                    document.getElementById('puntos').textContent = puntos;  // Mostrar puntos reales
+                    // Habilitar/Deshabilitar botones según los puntos disponibles
+                    checkProductButtons();
+                });
+            } else {
+                alert("Por favor, ingresa un número de teléfono.");
+            }
+        });
+
+        // Definir los puntos de cada producto
+        const productPoints = {
+            'margherita': 4,
+            'rucula': 6,
+            'pepperoni': 6
+        };
+
+        let cart = {
+            'margherita': 0,
+            'rucula': 0,
+            'pepperoni': 0
+        };
+
+        // Función para aumentar la cantidad
+        window.increaseQuantity = function (product) {
+            const quantityInput = document.getElementById('quantity-' + product);
+            const price = productPoints[product];
+            const currentQuantity = parseInt(quantityInput.value);
+
+            if (puntosDisponibles >= price * (currentQuantity + 1)) {
+                cart[product]++;
+                puntosDisponibles -= price;
+                quantityInput.value = currentQuantity + 1;
+                document.getElementById('puntos').textContent = puntosDisponibles;
+                checkProductButtons();
+            }
+        }
+
+        // Función para disminuir la cantidad
+        window.decreaseQuantity = function (product) {
+            const quantityInput = document.getElementById('quantity-' + product);
+            const price = productPoints[product];
+            const currentQuantity = parseInt(quantityInput.value);
+
+            if (currentQuantity > 0) {
+                cart[product]--;
+                puntosDisponibles += price;
+                quantityInput.value = currentQuantity - 1;
+                document.getElementById('puntos').textContent = puntosDisponibles;
+                checkProductButtons();
+            }
+        }
+
+        // Habilitar o deshabilitar los botones de aumentar/disminuir según los puntos disponibles
+        function checkProductButtons() {
+            Object.keys(productPoints).forEach(product => {
+                const price = productPoints[product];
+                const quantityInput = document.getElementById('quantity-' + product);
+                const increaseBtn = document.getElementById('increase-' + product);
+                const decreaseBtn = document.getElementById('decrease-' + product);
+
+                if (puntosDisponibles < price) {
+                    increaseBtn.disabled = true;
+                } else {
+                    increaseBtn.disabled = false;
+                }
+
+                if (quantityInput.value == 0) {
+                    decreaseBtn.disabled = true;
+                } else {
+                    decreaseBtn.disabled = false;
+                }
+            });
+        }
+    </script>
+</body>
+
+
+
+<footer>
+    <a href="index.html">
+        <img src="img/casa.png" alt="Logo 1">
+    </a>
+    <div class="separator"></div>
+
+    <a href="contacto.html">
+        <img src="img/redes-sociales.png" alt="Logo 2">
+    </a>
+    <div class="separator"></div>
+
+    <a href="puntos.html">
+        <img src="img/premios.png" alt="Logo 2">
+    </a>
+    <div class="separator"></div>
+
+    <a href="promociones.html">
+        <img src="img/promocion.png" alt="Logo 4">
+    </a>
+    <div class="separator"></div>
+
+    <a href="productos-ventas.html">
+        <img src="img/pizza.png" alt="Logo 3">
+    </a>
+    <div class="separator"></div>
+
+
+    <a href="carrito.html">
+        <div class="cart-icon">
+            <img src="img/carrito-de-compras.png" alt="Cart Icon">
+            <div id="cart-count">0</div> <!-- Contador del carrito -->
+        </div>
+    </a>
+</footer>
+
+</html>
